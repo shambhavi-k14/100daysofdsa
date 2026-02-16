@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+int main() {
+    int p, q;
+    int a[1000], b[1000];
+    int i = 0, j = 0;
+
+    // Input for first server log
+    scanf("%d", &p);
+    for (int x = 0; x < p; x++)
+        scanf("%d", &a[x]);
+
+    // Input for second server log
+    scanf("%d", &q);
+    for (int x = 0; x < q; x++)
+        scanf("%d", &b[x]);
+
+    // Merge and print in sorted order
+    while (i < p && j < q) {
+        if (a[i] <= b[j]) {
+            printf("%d ", a[i]);
+            i++;
+        } else {
+            printf("%d ", b[j]);
+            j++;
+        }
+    }
+
+    // Print remaining elements of first log
+    while (i < p) {
+        printf("%d ", a[i]);
+        i++;
+    }
+
+    // Print remaining elements of second log
+    while (j < q) {
+        printf("%d ", b[j]);
+        j++;
+    }
+
+    return 0;
+}
