@@ -1,0 +1,27 @@
+# Input order of square matrix
+n = int(input("Enter order of matrix: "))
+
+# Input matrix
+matrix = []
+print("Enter matrix elements:")
+for i in range(n):
+    row = []
+    for j in range(n):
+        row.append(int(input()))
+    matrix.append(row)
+
+# Check identity matrix
+is_identity = True
+
+for i in range(n):
+    for j in range(n):
+        if i == j and matrix[i][j] != 1:
+            is_identity = False
+        elif i != j and matrix[i][j] != 0:
+            is_identity = False
+
+# Output result
+if is_identity:
+    print("Identity Matrix")
+else:
+    print("Not an Identity Matrix")
