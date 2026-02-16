@@ -1,0 +1,19 @@
+# Input order of square matrix
+n = int(input("Enter order of matrix: "))
+
+# Input matrix
+matrix = []
+print("Enter matrix elements:")
+for i in range(n):
+    row = []
+    for j in range(n):
+        row.append(int(input()))
+    matrix.append(row)
+
+# Calculate sum of primary diagonal
+diagonal_sum = 0
+for i in range(n):
+    diagonal_sum += matrix[i][i]
+
+# Output result
+print("Sum of primary diagonal =", diagonal_sum)
