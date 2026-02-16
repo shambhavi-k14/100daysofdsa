@@ -1,0 +1,23 @@
+# Read string
+s = input("Enter a string: ")
+
+# Two pointers
+left = 0
+right = len(s) - 1
+
+# Assume palindrome
+is_palindrome = True
+
+# Compare characters
+while left < right:
+    if s[left] != s[right]:
+        is_palindrome = False
+        break
+    left += 1
+    right -= 1
+
+# Result
+if is_palindrome:
+    print("Palindrome")
+else:
+    print("Not a Palindrome")
