@@ -1,0 +1,22 @@
+# Input size of array
+n = int(input("Enter number of elements: "))
+
+# Input array elements
+arr = []
+print("Enter elements:")
+for i in range(n):
+    arr.append(int(input()))
+
+# Count frequency
+freq = {}
+
+for num in arr:
+    if num in freq:
+        freq[num] += 1
+    else:
+        freq[num] = 1
+
+# Display result
+print("Element frequencies:")
+for key in freq:
+    print(key, ":", freq[key])
