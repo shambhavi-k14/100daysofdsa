@@ -1,0 +1,28 @@
+# Input size of matrix
+n = int(input("Enter order of square matrix: "))
+
+# Input matrix
+matrix = []
+print("Enter matrix elements:")
+for i in range(n):
+    row = []
+    for j in range(n):
+        row.append(int(input()))
+    matrix.append(row)
+
+# Check symmetry
+is_symmetric = True
+
+for i in range(n):
+    for j in range(n):
+        if matrix[i][j] != matrix[j][i]:
+            is_symmetric = False
+            break
+    if not is_symmetric:
+        break
+
+# Output result
+if is_symmetric:
+    print("Matrix is Symmetric")
+else:
+    print("Matrix is Not Symmetric")
