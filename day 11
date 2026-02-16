@@ -1,0 +1,36 @@
+# Input size of matrix
+rows = int(input("Enter number of rows: "))
+cols = int(input("Enter number of columns: "))
+
+# First matrix
+print("Enter elements of first matrix:")
+A = []
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(int(input()))
+    A.append(row)
+
+# Second matrix
+print("Enter elements of second matrix:")
+B = []
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(int(input()))
+    B.append(row)
+
+# Sum matrix
+C = []
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(A[i][j] + B[i][j])
+    C.append(row)
+
+# Display result
+print("Sum of matrices:")
+for i in range(rows):
+    for j in range(cols):
+        print(C[i][j], end=" ")
+    print()
