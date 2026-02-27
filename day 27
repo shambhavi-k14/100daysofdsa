@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+struct node* createNode(int value)
+{
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = value;
+    newnode->next = NULL;
+    return newnode;
+}
+
+int getLength(struct node* head)
+{
+    int count = 0;
+    while(head != NULL)
+    {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+struct node* findIntersection(struct node* head1, struct node* head2)
+{
+    int len1 = getLength(head1);
+    int len2 = getLength(head2);
+
+    int diff;
+    struct node *ptr1 = head1;
+    struct node *ptr2 = head2;
+
+    if(len1 > len2)
+    {
+        diff = len1 - len2;
+        while(diff--)
+            ptr1 = ptr1->next;
+    }
+    else
+    {
+        diff = len2 - len1;
+        while(diff--)
+            ptr2 = ptr2->next;
+    }
+
+    while(ptr1 != NULL && ptr2 != NULL)
+    {
+        if(ptr1 == ptr2)
+            return ptr1;
+
+        ptr1 = ptr1->next;
+        ptr2 = ptr2->next;
+    }
+
+    return NULL;
+}
+
+int main()
+{
+    struct node *head1, *head2;
+
+    /* Common part */
+    struct node* common = createNode(30);
+    common->next = createNode(40);
+    common->next->next = createNode(50);
+
+    /* First list */
+    head1 = createNode(10);
+    head1->next = createNode(20);
+    head1->next->next = common;
+
+    /* Second list */
+    head2 = createNode(15);
+    head2->next = common;
+
+    struct node* intersection = findIntersection(head1, head2);
+
+    if(intersection != NULL)
+        printf("Intersection Point: %d\n", intersection->data);
+    else
+        printf("No Intersection\n");
+
+    return 0;
+}
