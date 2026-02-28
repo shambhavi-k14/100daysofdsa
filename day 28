@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+struct node *head = NULL;
+
+void insert(int value)
+{
+    struct node *newnode, *temp;
+
+    newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = value;
+
+    if(head == NULL)
+    {
+        head = newnode;
+        newnode->next = head;
+    }
+    else
+    {
+        temp = head;
+        while(temp->next != head)
+            temp = temp->next;
+
+        temp->next = newnode;
+        newnode->next = head;
+    }
+}
+
+void traverse()
+{
+    struct node *temp;
+
+    if(head == NULL)
+        return;
+
+    temp = head;
+    printf("Circular Linked List: ");
+
+    do
+    {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    } while(temp != head);
+
+    printf("(head)\n");
+}
+
+int main()
+{
+    int n, value, i;
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+
+    for(i = 0; i < n; i++)
+    {
+        printf("Enter value: ");
+        scanf("%d", &value);
+        insert(value);
+    }
+
+    traverse();
+
+    return 0;
+}
