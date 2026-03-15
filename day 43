@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+struct queue
+{
+    struct node *data;
+    struct queue *next;
+};
+
+struct queue *front = NULL, *rear = NULL;
+
+void enqueue(struct node *value)
+{
+    struct queue *temp = (struct queue*)malloc(sizeof(struct queue));
+    temp->data = value;
+    temp->next = NULL;
+
+    if(rear == NULL)
+    {
+        front = rear = temp;
+        return;
+    }
+
+    rear->next = temp;
+    rear = temp;
+}
+
+struct node* dequeue()
+{
+    if(front == NULL)
+        return NULL;
+
+    struct queue *temp = front;
+    struct node *value = temp->data;
+
+    front = front->next;
+    if(front == NULL)
+        rear = NULL;
+
+    free(temp);
+    return value;
+}
+
+struct node* createNode(int value)
+{
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = value;
+    newnode->left = newnode->right = NULL;
+    return newnode;
+}
+
+void inorder(struct node *root)
+{
+    if(root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+struct node* buildTree(int arr[], int n)
+{
+    if(n == 0)
+        return NULL;
+
+    struct node *root = createNode(arr[0]);
+    enqueue(root);
+
+    int i = 1;
+
+    while(i < n)
+    {
+        struct node *parent = dequeue();
+
+        parent->left = createNode(arr[i++]);
+        enqueue(parent->left);
+
+        if(i < n)
+        {
+            parent->right = createNode(arr[i++]);
+            enqueue(parent->right);
+        }
+    }
+
+    return root;
+}
+
+int main()
+{
+    int arr[] = {1,2,3,4,5,6,7};
+    int n = sizeof(arr)/sizeof(arr[0]);
+
+    struct node *root = buildTree(arr,n);
+
+    printf("Inorder Traversal: ");
+    inorder(root);
+
+    return 0;
+}
