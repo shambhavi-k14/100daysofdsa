@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+// Queue for storing tree nodes
+struct queue
+{
+    struct node *data;
+    struct queue *next;
+};
+
+struct queue *front = NULL, *rear = NULL;
+
+void enqueue(struct node *value)
+{
+    struct queue *temp = (struct queue*)malloc(sizeof(struct queue));
+    temp->data = value;
+    temp->next = NULL;
+
+    if(rear == NULL)
+    {
+        front = rear = temp;
+        return;
+    }
+
+    rear->next = temp;
+    rear = temp;
+}
+
+struct node* dequeue()
+{
+    if(front == NULL)
+        return NULL;
+
+    struct queue *temp = front;
+    struct node *value = temp->data;
+
+    front = front->next;
+    if(front == NULL)
+        rear = NULL;
+
+    free(temp);
+    return value;
+}
+
+struct node* createNode(int value)
+{
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = value;
+    newnode->left = NULL;
+    newnode->right = NULL;
+    return newnode;
+}
+
+void levelOrder(struct node *root)
+{
+    if(root == NULL)
+        return;
+
+    enqueue(root);
+
+    while(front != NULL)
+    {
+        struct node *temp = dequeue();
+        printf("%d ", temp->data);
+
+        if(temp->left != NULL)
+            enqueue(temp->left);
+
+        if(temp->right != NULL)
+            enqueue(temp->right);
+    }
+}
+
+int main()
+{
+    struct node *root;
+
+    // Creating tree
+    root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+    root->right->right = createNode(6);
+
+    printf("Level Order Traversal: ");
+    levelOrder(root);
+
+    return 0;
+}
