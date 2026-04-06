@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+// Node structure
+struct Node {
+    int vertex;
+    struct Node* next;
+};
+
+struct Node* adj[MAX];
+int visited[MAX];
+
+// Create node
+struct Node* createNode(int v) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->vertex = v;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Add edge (undirected)
+void addEdge(int u, int v) {
+    struct Node* newNode = createNode(v);
+    newNode->next = adj[u];
+    adj[u] = newNode;
+
+    newNode = createNode(u);
+    newNode->next = adj[v];
+    adj[v] = newNode;
+}
+
+// DFS cycle detection
+int hasCycleDFS(int vertex, int parent) {
+    visited[vertex] = 1;
+
+    struct Node* temp = adj[vertex];
+    while (temp) {
+        int adjVertex = temp->vertex;
+
+        // If not visited, recurse
+        if (!visited[adjVertex]) {
+            if (hasCycleDFS(adjVertex, vertex))
+                return 1;
+        }
+        // If visited and not parent → cycle
+        else if (adjVertex != parent) {
+            return 1;
+        }
+
+        temp = temp->next;
+    }
+
+    return 0;
+}
+
+// Check cycle in graph
+int detectCycle(int n) {
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            if (hasCycleDFS(i, -1))
+                return 1;
+        }
+    }
+    return 0;
+}
+
+// Main
+int main() {
+    int n, m, u, v;
+
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter number of edges: ");
+    scanf("%d", &m);
+
+    // Initialize
+    for (int i = 0; i < n; i++) {
+        adj[i] = NULL;
+        visited[i] = 0;
+    }
+
+    // Input edges
+    for (int i = 0; i < m; i++) {
+        printf("Enter edge (u v): ");
+        scanf("%d %d", &u, &v);
+        addEdge(u, v);
+    }
+
+    if (detectCycle(n))
+        printf("Cycle detected in the graph\n");
+    else
+        printf("No cycle in the graph\n");
+
+    return 0;
+}
