@@ -1,0 +1,90 @@
+#include <stdio.h>
+
+// Function to find maximum element
+int max(int arr[], int n) {
+    int m = arr[0];
+    for(int i = 1; i < n; i++) {
+        if(arr[i] > m)
+            m = arr[i];
+    }
+    return m;
+}
+
+// Function to find sum of array
+int sum(int arr[], int n) {
+    int s = 0;
+    for(int i = 0; i < n; i++) {
+        s += arr[i];
+    }
+    return s;
+}
+
+// Check if allocation is possible
+int isPossible(int arr[], int n, int m, int maxPages) {
+    int students = 1;
+    int pages = 0;
+
+    for(int i = 0; i < n; i++) {
+        if(arr[i] > maxPages)
+            return 0;
+
+        if(pages + arr[i] > maxPages) {
+            students++;
+            pages = arr[i];
+
+            if(students > m)
+                return 0;
+        } else {
+            pages += arr[i];
+        }
+    }
+    return 1;
+}
+
+// Main function
+int allocateBooks(int arr[], int n, int m) {
+    if(n < m)
+        return -1; // Not enough books
+
+    int low = max(arr, n);
+    int high = sum(arr, n);
+    int result = high;
+
+    while(low <= high) {
+        int mid = (low + high) / 2;
+
+        if(isPossible(arr, n, m, mid)) {
+            result = mid;
+            high = mid - 1; // Try smaller
+        } else {
+            low = mid + 1;  // Increase limit
+        }
+    }
+    return result;
+}
+
+int main() {
+    int n, m;
+
+    printf("Enter number of books: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter pages in each book:\n");
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter number of students: ");
+    scanf("%d", &m);
+
+    int ans = allocateBooks(arr, n, m);
+
+    if(ans == -1)
+        printf("Allocation not possible\n");
+    else
+        printf("Minimum possible maximum pages = %d\n", ans);
+
+    return 0;
+}
