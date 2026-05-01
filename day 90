@@ -1,0 +1,84 @@
+#include <stdio.h>
+
+// Function to find maximum element
+int max(int arr[], int n) {
+    int m = arr[0];
+    for(int i = 1; i < n; i++) {
+        if(arr[i] > m)
+            m = arr[i];
+    }
+    return m;
+}
+
+// Function to find sum
+int sum(int arr[], int n) {
+    int s = 0;
+    for(int i = 0; i < n; i++) {
+        s += arr[i];
+    }
+    return s;
+}
+
+// Check if painting is possible within given time
+int isPossible(int arr[], int n, int k, int maxTime) {
+    int painters = 1;
+    int time = 0;
+
+    for(int i = 0; i < n; i++) {
+        if(arr[i] > maxTime)
+            return 0;
+
+        if(time + arr[i] > maxTime) {
+            painters++;
+            time = arr[i];
+
+            if(painters > k)
+                return 0;
+        } else {
+            time += arr[i];
+        }
+    }
+    return 1;
+}
+
+// Main function
+int painterPartition(int arr[], int n, int k) {
+    int low = max(arr, n);
+    int high = sum(arr, n);
+    int result = high;
+
+    while(low <= high) {
+        int mid = (low + high) / 2;
+
+        if(isPossible(arr, n, k, mid)) {
+            result = mid;
+            high = mid - 1; // minimize
+        } else {
+            low = mid + 1;
+        }
+    }
+    return result;
+}
+
+int main() {
+    int n, k;
+
+    printf("Enter number of boards: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter lengths of boards:\n");
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter number of painters: ");
+    scanf("%d", &k);
+
+    int ans = painterPartition(arr, n, k);
+
+    printf("Minimum time required = %d\n", ans);
+
+    return 0;
+}
