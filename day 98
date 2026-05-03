@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Interval structure
+struct Interval {
+    int start, end;
+};
+
+// Sort by start time
+int compare(const void *a, const void *b) {
+    return ((struct Interval*)a)->start - ((struct Interval*)b)->start;
+}
+
+void mergeIntervals(struct Interval arr[], int n) {
+    if(n <= 0) return;
+
+    // Step 1: Sort intervals
+    qsort(arr, n, sizeof(struct Interval), compare);
+
+    struct Interval result[n];
+    int index = 0;
+
+    // Add first interval
+    result[index++] = arr[0];
+
+    // Step 2: Merge
+    for(int i = 1; i < n; i++) {
+        struct Interval last = result[index - 1];
+
+        // If overlapping
+        if(arr[i].start <= last.end) {
+            // Merge
+            result[index - 1].end = (arr[i].end > last.end) ? arr[i].end : last.end;
+        } else {
+            // Add new interval
+            result[index++] = arr[i];
+        }
+    }
+
+    // Print result
+    printf("Merged intervals:\n");
+    for(int i = 0; i < index; i++) {
+        printf("[%d, %d] ", result[i].start, result[i].end);
+    }
+}
+
+int main() {
+    int n;
+
+    printf("Enter number of intervals: ");
+    scanf("%d", &n);
+
+    struct Interval arr[n];
+
+    printf("Enter intervals (start end):\n");
+    for(int i = 0; i < n; i++) {
+        scanf("%d %d", &arr[i].start, &arr[i].end);
+    }
+
+    mergeIntervals(arr, n);
+
+    return 0;
+}
